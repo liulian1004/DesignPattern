@@ -26,6 +26,8 @@ public class Singleton {
         Singleton2 d = Singleton2.getInstance(car2);
         System.out.println(c.equals(d)); // true
 
+        System.out.println(((2+2)>>1));
+
 //        new Thread(() ->{
 //            System.out.println(Thread.currentThread().toString());
 //            Singleton2 a = Singleton2.getInstance();
