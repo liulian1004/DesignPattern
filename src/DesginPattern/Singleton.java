@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Singleton {
     public static void main(String[] args) {
+        // Singleton basics
 //        Singleton2 a = Singleton2.getInstance();
 //        Singleton2 b = Singleton2.getInstance();
 //        System.out.println(a.equals(b));
@@ -28,6 +29,8 @@ public class Singleton {
 
         System.out.println(((2+2)>>1));
 
+        // Demo for multi-threading
+        // new Thread().start(); is used to start a new thread.
 //        new Thread(() ->{
 //            System.out.println(Thread.currentThread().toString());
 //            Singleton2 a = Singleton2.getInstance();
@@ -58,9 +61,6 @@ class BYD implements ICar {
 class Singleton2 {
 
     private final ICar car;
-//    private Singleton2() {
-//        car = null;
-//    }
 
     private Singleton2 (ICar car) {
         this.car = car;
@@ -69,6 +69,7 @@ class Singleton2 {
     private static Singleton2 instance;
 
 
+    // Singleton basics, we will have ONLY one instance any time.
     // synchronized : 用于多现成，只初始化一次
 //    public static synchronized  Singleton2 getInstance() {
 //        if (instance == null) {
@@ -78,7 +79,7 @@ class Singleton2 {
 //    }
 
     //pratice:
-    //有条件的singleton
+    //有条件的singleton only when car is not the same we will create new instance.
     public static Singleton2 getInstance(ICar car) {
         if (instance == null) {
             instance = new Singleton2(car);
