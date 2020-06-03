@@ -43,6 +43,9 @@ public class Singleton {
 //
 //        System.out.println(Thread.currentThread().toString());
 //        Singleton2 c = Singleton2.getInstance();
+
+//        ICar car = new Ford();
+//        ICar car10 = new BYD();
     }
 }
 
@@ -67,8 +70,6 @@ class Singleton2 {
     }
 
     private static Singleton2 instance;
-
-
     // Singleton basics, we will have ONLY one instance any time.
     // synchronized : 用于多现成，只初始化一次
 //    public static synchronized  Singleton2 getInstance() {
@@ -80,7 +81,7 @@ class Singleton2 {
 
     //pratice:
     //有条件的singleton only when car is not the same we will create new instance.
-    public static Singleton2 getInstance(ICar car) {
+    public static synchronized Singleton2 getInstance(ICar car) {
         if (instance == null) {
             instance = new Singleton2(car);
         }else if(!instance.car.getClass().equals(car.getClass()) ) {
@@ -88,7 +89,36 @@ class Singleton2 {
         }
         return instance;
     }
-
-
 }
+
+class Singleton3 {
+    private static final Singleton3 instance = new Singleton3();
+
+    private static Singleton3 instance2;
+
+    public static synchronized Singleton3 getInstance() {
+//        instance = new Singleton3();
+        return instance;
+    }
+
+    public static synchronized Singleton3 getInstance2(ICar car) {
+        if (instance2 == null) {
+            instance2 = new Singleton3(car);
+        }
+        return instance2;
+    }
+
+    private Singleton3(){
+        car = null;
+    }
+
+    private Singleton3(ICar car){
+        this.car = car;
+    }
+
+    private ICar car;
+    private float pi = 3.1415926f;
+}
+
+
 

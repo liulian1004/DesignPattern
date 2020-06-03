@@ -1,11 +1,12 @@
-package DesginPattern;
+package DesginPattern.factory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Factory pattern
+ * Factory pattern: based on different input param, return corresponding implementations.
  * */
 public class Factory {
     public static void main(String[] arg) {
@@ -23,23 +24,25 @@ public class Factory {
         List<Integer> list = new ArrayList<>();
         List<Integer> list2 = new LinkedList<>();
 
-        System.out.println("Factory pattern:");
-        car c1 = F1.produce(cartype.byd);
-        System.out.println(c1 instanceof F1.byd);
-        car c2 = F1.produce(cartype.ford);
-        System.out.println(c2 instanceof F1.ford);
-        car c3 = F1.produce(cartype.tesla);
-        System.out.println(c3 instanceof F1.tesla);
-        System.out.println(!(c3 instanceof F1.ford));
+//        System.out.println("Factory pattern:");
+//        car c1 = F1.produce(cartype.byd);
+//        System.out.println(c1 instanceof F1.byd);
+//        car c2 = F1.produce(cartype.ford);
+//        System.out.println(c2 instanceof F1.ford);
+//        car c3 = F1.produce(cartype.tesla);
+//        System.out.println(c3 instanceof F1.tesla);
+//        System.out.println(!(c3 instanceof F1.ford));
+//
+//        car c4 = F1.produce(cartype.byd);
+//        System.out.println(c1 == c4);
+//
+//        car c5 = F1.produce(cartype.tesla);
+//        System.out.println(c3!=c5);
+        car c1 = F1.produce(cartype.tesla);
+        System.out.println("Test F1 tesla:" + c1.toString() );
 
-        car c4 = F1.produce(cartype.byd);
-        System.out.println(c1 == c4);
-
-        car c5 = F1.produce(cartype.tesla);
-        System.out.println(c3!=c5);
     }
 }
-
 
 // singleton review
 enum Type {
@@ -48,19 +51,21 @@ enum Type {
     clothes,
 }
 
-interface car {}
+interface car {}  // public
 
-
-
-enum cartype {
+enum cartype { // public
     ford,
     tesla,
     byd,
 }
-class F1 {
+
+class F1 { // public
 //    private static byd bydCar;
     // make sure you have only one byd instance using final.
     private final static byd bydCar = new byd();
+    private final static tesla[] tesla = new tesla[]{new tesla(),new tesla(),new tesla()};
+
+
 //    private final static int test = 1;
 
     static class ford implements car {}
@@ -78,7 +83,7 @@ class F1 {
     // package, car constructor is not exposed to outside package.
     // encapsulation.
     public static car produce(cartype type) {
-        // Only for byd we always return the same instance. 
+        // Only for byd we always return the same instance.
         if (type == cartype.byd) {
 //            if(bydCar == null) {
 //                bydCar = new byd();
@@ -86,7 +91,8 @@ class F1 {
             return bydCar;
         }
         if (type == cartype.tesla) {
-            return new tesla();
+            int i  = (int)(Math.random()*tesla.length) ;
+            return tesla[i];
         }
         if (type == cartype.ford) {
             return new ford();
