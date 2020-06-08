@@ -3,7 +3,10 @@ package DesginPattern.factory;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 
 /**
- * Split the construction process of a complicated instance, of which each element is difficult to build, and could be built in heterogeneous context.
+ * Split the construction process of a complicated instance, of which
+ * each element is difficult to build, and could be built in heterogeneous context.
+ *
+ * Decoupling component collection and instance construction process.
  * */
 public class Builder {
     public static void main(String[] args) {
@@ -11,7 +14,8 @@ public class Builder {
 //        user.userName("111");
 //        user.password("123");
 //        System.out.println(user.toString());
-
+        System.out.println("B1.class.equals(B1.Builder.class):");
+        System.out.println(B1.class.equals(B1.Builder.class) );
         // Basic BUILDER use case
         B1.Builder builder = new B1.Builder();
         builder.setUserName("111");
