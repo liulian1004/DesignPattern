@@ -68,10 +68,21 @@ interface buildFood {
 
 class Soup extends Food{}
 class SoupMaker implements buildFood {
+
+
     @Override
     public Food buildFood() {
         return new Soup();
     }
+}
+class SoupNoodle extends Food{}
+class SoupNoodleMaker implements buildFood {
+
+    @Override
+    public Food buildFood() {
+        return new SoupNoodle();
+    }
+
 }
 
 class FoodMaker {
@@ -79,6 +90,7 @@ class FoodMaker {
     private buildFood noodleMaker;
     private buildFood friedNoodleMaker;
     private buildFood soupMaker;
+    private buildFood soupNoodleMaker;
 
     public FoodMaker(buildFood fm, buildFood nm, buildFood fnm) {
         fruitMaker = fm;
@@ -102,6 +114,10 @@ class FoodMaker {
 
     public void setSoupMaker(buildFood soupMaker) {
         this.soupMaker = soupMaker;
+    }
+
+    public void SetSoupNoodle(buildFood soupNoodleMaker) {
+        this.soupNoodleMaker = soupNoodleMaker;
     }
 
     public void buildSoupNoodle() {
@@ -133,6 +149,12 @@ class FoodMaker {
             return null;
         }
         return soupMaker.buildFood();
+    }
+    public Food soupNoodle() {
+        if(soupNoodleMaker == null) {
+            return null;
+        }
+        return soupNoodleMaker.buildFood();
     }
 }
 
