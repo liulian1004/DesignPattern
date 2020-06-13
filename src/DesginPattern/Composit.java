@@ -11,20 +11,30 @@ public class Composit {
         fm.setFruitMaker(new FruitMaker());
         fm.setNoodleMaker(new NoodleMaker());
         fm.setSoupMaker(new SoupMaker());
-        fm.buildNoodle();
-        fm.buildFruit();
-        Food soup = fm.buildSoup();
-
+        Food f = new Noodle();
+        System.out.println("f: "+f);
+        fm.buildNoodle(f);
+        System.out.println("Noodle:" + f.food.toString());
+        fm.buildFruit(new Food());
+        fm.buildSoup(new Food());
+        fm.setSoupNoodleMaker(new SoupNoodleMaker(new SoupMaker(), new NoodleMaker()));
+        Food food = new soupNoodle(); // food.class().getSimpleName();
+        fm.buildSoupNoodle(food);
+        System.out.println("food:" + food.food.toString());
     }
 }
 
-class Food{}
+class Food{
+    StringBuilder food = new StringBuilder();
+}
 
 class Noodle extends Food{}
 class NoodleMaker implements buildFood {
     @Override
-    public Food buildFood() {
-        return new Noodle();
+    public void buildFood(final Food f) {
+//        f = new Noodle();
+        f.food.append("add noodle");
+        f.food = new StringBuilder();
     }
 }
 //class NoodleMaker extends FruitMaker {
@@ -37,8 +47,8 @@ class NoodleMaker implements buildFood {
 class Fruit extends Food{}
 class FruitMaker implements buildFood {
     @Override
-    public Food buildFood() {
-        return new Fruit();
+    public void buildFood(Food f) {
+        f.food.append("add fruit");
     }
 }
 //class FruitMaker {
@@ -47,13 +57,14 @@ class FruitMaker implements buildFood {
 
 class FriedNoodleMaker implements buildFood {
     @Override
-    public Food buildFood() {
-        Noodle noodle = new Noodle();
-        fry(noodle);
-        return noodle;
+    public void buildFood(Food f) {
+        fry(f);
+        f.food.append("noodle.");
     }
 
-    private void fry(Food food) {}
+    private void fry(Food food) {
+        food.food.append("fry ");
+    }
 }
 //class FriedNoodleMaker {
 //    public Noodle buildNoodle() {
@@ -63,7 +74,7 @@ class FriedNoodleMaker implements buildFood {
 //}
 
 interface buildFood {
-    Food buildFood();
+    void buildFood(Food f);
 }
 
 class Soup extends Food{}
@@ -71,18 +82,26 @@ class SoupMaker implements buildFood {
 
 
     @Override
-    public Food buildFood() {
-        return new Soup();
+    public void buildFood(Food f) {
+        f.food.append("add soup");
     }
 }
-class SoupNoodle extends Food{}
+class soupNoodle extends Food{};
+//
 class SoupNoodleMaker implements buildFood {
 
-    @Override
-    public Food buildFood() {
-        return new SoupNoodle();
+    buildFood soupMaker;
+    buildFood noodleMaker;
+    public SoupNoodleMaker(buildFood soupMaker, buildFood noodleMaker) {
+        this.soupMaker=soupMaker;
+        this.noodleMaker=noodleMaker;
     }
 
+    @Override
+    public void buildFood(Food f) {
+        soupMaker.buildFood(f);
+        noodleMaker.buildFood(f);
+    }
 }
 
 class FoodMaker {
@@ -116,45 +135,50 @@ class FoodMaker {
         this.soupMaker = soupMaker;
     }
 
-    public void SetSoupNoodle(buildFood soupNoodleMaker) {
+    public void setSoupNoodleMaker(buildFood  soupNoodleMaker){
         this.soupNoodleMaker = soupNoodleMaker;
     }
 
-    public void buildSoupNoodle() {
+    public void buildSoupNoodle(Food f) {
         // decorator pattern
+        if(soupNoodleMaker == null){
+            return ;
+        }
+        soupNoodleMaker.buildFood(f);
+
     }
 
-    public Food buildNoodle() {
+    public void buildNoodle(Food f) {
         if (noodleMaker == null) {
-            return null;
+            return;
         }
-        return noodleMaker.buildFood();
+        noodleMaker.buildFood(f);
     }
 
-    public Food buildFruit() {
+    public void buildFruit(Food f) {
         if (fruitMaker == null) {
-            return null;
+            return ;
         }
-        return fruitMaker.buildFood();
+        fruitMaker.buildFood(f);
     }
 
-    public Food buildFriedNoodle() {
+    public void buildFriedNoodle(Food f) {
         if (friedNoodleMaker == null) {
-            return null;
+            return ;
         }
-        return friedNoodleMaker.buildFood();
+        friedNoodleMaker.buildFood(f);
     }
-    public Food buildSoup() {
+    public void buildSoup(Food f) {
         if(soupMaker == null) {
-            return null;
+            return ;
         }
-        return soupMaker.buildFood();
+        soupMaker.buildFood(f);
     }
-    public Food soupNoodle() {
+    public void soupNoodle(Food f) {
         if(soupNoodleMaker == null) {
-            return null;
+            return ;
         }
-        return soupNoodleMaker.buildFood();
+        soupNoodleMaker.buildFood(f);
     }
 }
 
@@ -172,16 +196,16 @@ class StreetStand {
     public void setSoupMaker(buildFood makeSoup) {
         this.soupMaker = makeSoup;
     }
-    public Food buildFruit(){
+    public void buildFruit(Food f){
         if(fruitMaker == null) {
-            return null;
+            return ;
         }
-        return fruitMaker.buildFood();
+        fruitMaker.buildFood(f);
     }
-    public Food buildSoup(){
+    public void buildSoup(Food f){
         if(soupMaker == null) {
-            return null;
+            return ;
         }
-        return soupMaker.buildFood();
+        soupMaker.buildFood(f);
     }
 }
