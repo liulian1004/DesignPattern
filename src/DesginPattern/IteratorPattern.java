@@ -14,74 +14,70 @@ public class IteratorPattern {
         set.add(7);
         set.add(6);
         set.add(4);
-        //Collection<Integer> c = new Collection<>(set);
+        Collection<Integer> c = new Collection<>(set);
         Iterator<Integer> iterator = c.getIterator();
         // TODO: print all elements in collection class with iterator.
         while(iterator.hasNext()) {
             System.out.println(iterator.next());
         }
 
-        // TODO: input two list, 0 max, 1 plus, 2 multiple, 3 divide, 4 min,
+        // TODO: input two list, 0 max, 1 plus, 2 multiple, 3 divide, 4 min.
         List<Integer> l1 = new ArrayList<>();
         List<Float> l2 = new ArrayList<>();
-        Collection<Integer, Float> c1 = new Collection<>(l1,l2);
-        List<Float> res = new ArrayList<>();
-        res.add(c1.max());
-        res.add(c1.add());
-        res.add(c1.time());
+
     }
 
 }
 
 // List<>  ArrayList  LinkedList
 
-class Collection<Integer, Float> {
-//    Set<T> data;
-    private List<Integer> list;
-    private List<Float> list2;
-    public Collection(Set<T> data, Set<E> data2) {
+class Collection<T> {
+    Set<T> data;
+    //private List<Integer> list;
+    //private List<Float> list2;
+    public Collection(Set<T> data) {
         //TODO: implement init
-//        data = new HashSet<>();
-//        list = new ArrayList<>(data.size());
+        data = new HashSet<>();
+       // list = new ArrayList<>(data.size());
 //        for (T t: data) {
 //            list.add(t);
 //        }
-        list = new ArrayList<>(data);
-        list2 = new ArrayList<>(data2);
+        //list = new ArrayList<>(data);
+        //list2 = new ArrayList<>(data2);
     }
 
-    public Collection(List<Integer> list, List<Float> list2) {
-        this.list = list;
-        this.list2 = list2;
-    }
-    java.util.Iterator<Integer> i1 = list.iterator();
+//    public Collection(List<Integer> list, List<Float> list2) {
+//        this.list = list;
+//        this.list2 = list2;
+//    }
+//    java.util.Iterator<Integer> i1 = list.iterator();
+//
+//    java.util.Iterator<Float> i2 = list2.iterator();
 
-    java.util.Iterator<Float> i2 = list2.iterator();
+//    public float add() {
+//        int a = (int) i1.next();
+//        float b = (float) i2.next();
+//        return (float)a + b;
+//    }
+//    public float max() {
+//        int a = (int) i1.next();
+//        float b = (float) i2.next();
+//        return Math.max(a, (float)b);
+//    }
+//    public float time() {
+//        int a = (int) i1.next();
+//        float b = (float) i2.next();
+//        return (float)a*b;
+//    }
 
-    public float add() {
-        int a = (int) i1.next();
-        float b = (float) i2.next();
-        return (float)a + b;
-    }
-    public float max() {
-        int a = (int) i1.next();
-        float b = (float) i2.next();
-        return Math.max(a, (float)b);
-    }
-    public float time() {
-        int a = (int) i1.next();
-        float b = (float) i2.next();
-        return (float)a*b;
-    }
-
-    public Iterator<T, E> getIterator() {
+    public Iterator<T> getIterator() {
         // TODO: implement get iterator.
 
-//        Iterator<T> ite = new IterImpl<>(list);
-//        return ite;
-        // TODO: implement with IterImpl2
-        Iterator<T, E> ite = new IterImpl2<T, E>(list.iterator(), list2.iterator());
+        Iterator<T> ite = null;
         return ite;
+        // TODO: implement with IterImpl2
+      //  Iterator<T, E> ite = new IterImpl2<T, E>(list.iterator(), list2.iterator());
+       // return ite;
     }
 }
 

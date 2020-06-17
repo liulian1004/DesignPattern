@@ -79,7 +79,18 @@ public class Observer {
 interface ob1 {
     void onSuccess(int i);
 //    void onError(Exception e);
+    /**
+     * This is JavaDoc. It will reflected on caller side.
+     * @Deprected use onError(int) instead.
+     */
     void onError(String s);
+
+    /*
+    * This comment is not javadoc, it is not reflected.
+    */
+    default void onError(int errorCode) {
+        System.out.println("errorCode:" + errorCode);
+    }
 }
 
 class ob1impl implements ob1 {
@@ -133,8 +144,13 @@ class LocalDataService /*extends ob1impl*/ {
     void registerob(ob1 obInstance) {
         this.obInstance = obInstance;
     }
-    public void perform (int req) {
-        if(req > 0) {
+    public void perform (int req
+            /*This is used to simulate success or failure on caller level,
+            ideally we only pass request params, like query criteria,
+            timeout, caller permission, etc.*/) {
+        // perform local data access request based on params.
+        // get req as the reponse. req>0 means success, otherwise fail.
+        if(req > 0) { // success case
             if (obInstance!=null) {
                 obInstance.onSuccess(req);
 //                for (ob1 o : set) {
@@ -142,7 +158,7 @@ class LocalDataService /*extends ob1impl*/ {
 //                }
             }
 
-        }else{
+        }else{ // failure case
             if (obInstance!=null) {
                 obInstance.onError(LocalDataService.class.getSimpleName() + ": perform ");
                 //                for (ob1 o : set) {
