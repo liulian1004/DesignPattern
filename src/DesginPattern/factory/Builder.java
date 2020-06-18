@@ -71,6 +71,8 @@ class B1 {
 //        this.dob = UserBuilder.dob;
 //        this.address = UserBuilder.address;
 //    }
+
+    //constructor为private
 private B1(Builder user) {
     this.userName = user.userName;
     this.password = user.password;
@@ -78,12 +80,6 @@ private B1(Builder user) {
     this.address = user.address;
 }
 
-    private B1(String un, String pw, long dob, String addr) {
-        userName = un;
-        password = pw;
-        this.dob = dob;
-        address = addr;
-    }
 
     public String getUserName() {
         return userName;
@@ -111,8 +107,8 @@ private B1(Builder user) {
 //        private static String address = null;
         private String userName;
         private String password;
-        private long dob = 0l;
-        private String address = null;
+        private long dob = 0l; //optional ，先给一个默认值
+        private String address = null;//optional ，先给一个默认值
 
         public Builder setUserName(String userName) {
             this.userName = userName;
@@ -138,7 +134,7 @@ private B1(Builder user) {
             if(userName == null || password == null) {
                 throw new IllegalArgumentException("You have to fill this info");
             }
-            return new B1(userName, password, dob, address);
+            return new B1(this);//this: builder自己的filed
         }
 //        public UserBuilder builder(){
 //            if(userName == null || password == null) {
