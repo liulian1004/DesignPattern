@@ -1,6 +1,6 @@
 package DesginPattern;
 
-import DesginPattern.factory.Factory;
+
 
 import java.util.*;
 import java.util.Collection;
@@ -11,34 +11,45 @@ public class Adapter {
        // build pattern
        List<Object> list = new ArrayList<>();
        list.add("111");
-       list.add("True");
+       list.add(true);
        list.add("Alex");
        list.add("phd");
-       Factory factory = new Factory();
-       Icomponent obj = factory.product(list);
-       Collections<obj> citizens = new ArrayList<>();
+       AdaptorFactory factory = new AdaptorFactory();
+       Icomponent c = factory.product(Type.Citizen, list);
+        Citizen citizen = null;
+        Collection<Citizen> citizens = new ArrayList<>();
+        //比较安全的对implmentation类型转成 class
+       if (c instanceof Citizen) {
+           citizen = (Citizen)c;
+           citizens.add(citizen);
+       }
 
 
-       List<LinkedInMember> l = new ArrayList<>();
-       LinkedInMember linkedInMember = new LinkedInMember("222", false, "Wang","null",new String[]{"sql","c","aws"});
-       l.add(linkedInMember);
-
-       IAdapter iAdapter = EmployeeAdapter.getInstance();
-       EmployeeManagementSystem e = new EmployeeManagementSystem(iAdapter);
+       List<Object> l = new ArrayList<>();
+       l.add("222");
+       l.add(false);
+       l.add("Wang");
+       l.add("null");
+       //l.add(new String[]{"sql","c","aws"});
+       //(linkedInMember)比较冒险，可能类型不一致,complier会报错
+       LinkedInMember linkedInMember = (LinkedInMember) factory.product(Type.LinkedInMember, list);
+       Collection<LinkedInMember> linkedInMembers = new ArrayList<>();
+       linkedInMembers.add(linkedInMember);
+       EmployeeAdapter employeeAdapter = EmployeeAdapter.getInstance();
+       //要先在变化发生之前注册observer
+        Iobserver ob = new Observerimpl();
+        employeeAdapter.registerOb(ob);
+       EmployeeManagementSystem e = new EmployeeManagementSystem(employeeAdapter);
        e.addCitizen(citizens);
-       e.addLinkedinMembers(l);
+       e.addLinkedinMembers(linkedInMembers);
         for (Iterator<Employee> it = e.someAPIAccessEmployees(); it.hasNext(); ) {
             Employee employee = it.next();
             System.out.println("employee:" + employee);
         }
-//       Employee e2 = new Employee();
 
-        //obvers
-
-        Iobserver ob = new Observerimpl();
-        ob.onChange(e);
     }
 }
+
 
 // TODO: Figure out factory pattern for citizen, linkedinmember and employee.  Java8 feature: variable length array.
 interface  Icomponent{
@@ -101,7 +112,7 @@ class LinkedInMember implements Icomponent {
     private boolean isVIP;
     private final String name;
     private  String employer;
-    private String[] skills;
+    private String[] skills = new String[1];
 
     public LinkedInMember(LinkedInMemberBuilder linkedInMemberBuilder) {
         this.lnkdId = linkedInMemberBuilder.lnkdId;
@@ -160,17 +171,23 @@ class LinkedInMember implements Icomponent {
     }
 }
 interface Iproductable{
-    Icomponent product(List<Object> list );
+    Icomponent product(Type type, List<Object> list );
+}
+enum Type{
+    Employee,
+    Citizen,
+    LinkedInMember;
+
+
 }
 
-class Factory implements Iproductable{
+class AdaptorFactory implements Iproductable{
    //private Icomponent citizen = new Citizen();
    //Icomponent.classType
 
-
     @Override
-    public Icomponent product(List<Object> list) {
-        if(list.size() == 6) {
+    public Icomponent product(Type type, List<Object> list) {
+        if(type == Type.Employee) {
             Employee.EmployeeBuilder employeeBuilder = new Employee.EmployeeBuilder();
                 employeeBuilder.setEmployeeId((int)(list.get(0)));
                 employeeBuilder.setGender((boolean)(list.get(1)));
@@ -181,14 +198,14 @@ class Factory implements Iproductable{
                 employeeBuilder.setSkills(skills);
                 Icomponent employee = new Employee(employeeBuilder);
                 return employee;
-        }else if(list.size() == 5){
+        }else if(type == Type.LinkedInMember){
             LinkedInMember.LinkedInMemberBuilder linkedInMemberBuilder = new LinkedInMember.LinkedInMemberBuilder();
             linkedInMemberBuilder.setLnkdId((String)(list.get(0)));
             linkedInMemberBuilder.setVIP((boolean)(list.get(1)));
             linkedInMemberBuilder.setName((String)(list.get(2)));
             linkedInMemberBuilder.setEmployer((String)(list.get(3)));
-            String[] skills = new String[]{(String)(list.get(4))};
-            linkedInMemberBuilder.setSkills(skills);
+            //String[] skills = new String[]{(String)(list.get(4))};
+            //linkedInMemberBuilder.setSkills(skills);
             Icomponent linkedInMember = new LinkedInMember(linkedInMemberBuilder);
             return linkedInMember;
         }
@@ -328,10 +345,10 @@ class Observerimpl implements Iobserver{
     @Override
     public void onChange(Collection<Employee> employees) {
         // Invalidate existing UI.
-        System.out.println("employees:" + employees);
-        for (Employee e : employees) {
-            System.out.println("e:" + e);
-        }
+        System.out.println("employees changes happend" + employees);
+//        for (Employee e : employees) {
+//            System.out.println("e:" + e);
+//        }
     }
 }
 // TODO: Use singleton pattern.

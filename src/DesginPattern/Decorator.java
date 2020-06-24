@@ -78,6 +78,7 @@ class GDChef implements Chef {
     }
 }
 
+// decorator pattern sample
 class BJChef implements Chef {
     private Chef gd;
     private Chef sc;
@@ -95,6 +96,7 @@ class BJChef implements Chef {
     }
 }
 
+// anti pattern showing that when the process to polish an object changes, inheritance will incur huge cascading changes.
 class GuangDongChef extends SichuanChef{
     @Override
     public void cook(Dish dish) {
@@ -111,3 +113,4 @@ class BeijingChef extends GuangDongChef{
         super.cook(dish);
     }
 }
+// anti pattern ends here. 
