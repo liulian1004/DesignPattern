@@ -4,14 +4,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * proxy pattern: 先给一个null implementation。实际等server端有空了在实现
+ * option1 ： call要这个request，才把已经实现好的implementation发送过去
+ * option2： 实现好了直接替换调原先空的implementation
+ * */
 public class Proxy {
     public static void main(String[] args) throws InterruptedException{
         PProxy proxy = new PProxy();
         Ipdata fake = proxy.produceDate();
+        //等3秒后call这个fake函数
         Thread.sleep(3000);
+        //real implementation还没有准备好
         fake.getCalled();
+        //再等3秒后call这个fake函数
         Thread.sleep(3000);
+        //返回real 函数
         fake.getCalled();
+        //返回real 函数
         fake.getCalled();
     }
 }
@@ -32,12 +42,15 @@ class FakeImpl implements  Ipdata, Pobserve{
 
     @Override
     public void getCalled() {
+        //real函数已经替换好，直接call real 函数
         if (real != null) {
             real.getCalled();
             return;
         }
         System.out.println("FakeImpl.getCalled()");
         Ipdata real = onChange(this);
+        // fake 函数被call了，去看下real 函数有没有准备好
+        //准备好了直接调用real 函数
         if (real != null) {
             this.real = real;
             real.getCalled();
@@ -62,6 +75,10 @@ class FakeImpl implements  Ipdata, Pobserve{
         this.proxy = proxy;
     }
 }
+
+
+
+
 // TODO: a real implementation for PData, that the creation is difficult and expensive.
 
 class RealImpl implements  Ipdata {
@@ -126,6 +143,7 @@ class PProxy implements IFakeReplaceble{
         if (fake instanceof Pobserve) {
             ((Pobserve)fake).register(this);
         }
+        // 异步执行
         // new Thread().start();
         new Thread(()->{
             Ipdata real = new RealImpl(); // long and expensive
@@ -140,6 +158,7 @@ class PProxy implements IFakeReplaceble{
 //        return fackimpl;
     }
 
+    //real 函数做好后替换成real 函数
     @Override
     public Ipdata getAlternative(Ipdata fake) {
         if (fakeToReal.containsKey(fake)) {
@@ -147,4 +166,5 @@ class PProxy implements IFakeReplaceble{
         }
         return null;
     }
+
 }

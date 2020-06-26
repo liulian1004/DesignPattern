@@ -3,7 +3,7 @@ package DesginPattern;
 import java.util.HashSet;
 import java.util.Set;
 /**
- * model register the observer,and any change of model will trigger ,and update the view accordingly
+ * model register the observer,and any change of model(observable) will trigger ,and update the view/inform observer accordingly
  * */
 
 public class Observer {
