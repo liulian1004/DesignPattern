@@ -1,8 +1,5 @@
 package DesginPattern;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Singleton {
     public static void main(String[] args) {

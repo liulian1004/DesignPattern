@@ -22,6 +22,13 @@ public class Builder {
         builder.setPassword("123");
         builder.setDob(1l);
         builder.setAddress("addr");
+        //也可以已下面的形式放入参数
+        //因为我们写了以下形式
+        // public Builder setUserName(String userName) {
+        //            this.userName = userName;
+        //            return this;
+        //        }
+        // builder.setUserName("111").setPassword("123").setDob(1l).setAddress("addr")
         B1 b1 = builder.build();
         // Question: Why not use constructor directly?
         // B1 b2 = new B1(un, pw, dob, addr);
@@ -73,7 +80,7 @@ class B1 {
 //    }
 
     //constructor为private
-private B1(Builder user) {
+    private B1(Builder user) {
     this.userName = user.userName;
     this.password = user.password;
     this.dob = user.dob;
@@ -109,11 +116,15 @@ private B1(Builder user) {
         private String password;
         private long dob = 0l; //optional ，先给一个默认值
         private String address = null;//optional ，先给一个默认值
-
+// return this 可以在调用是直接连续set. ie builder.setUserName(..).setPassWord(..)
         public Builder setUserName(String userName) {
             this.userName = userName;
             return this;
         }
+        //这里不能连续call
+       // public void setUserName(){}
+
+
         public Builder setPassword(String password) {
             this.password = password;
             return this;
@@ -126,7 +137,6 @@ private B1(Builder user) {
             this.address = address;
             return this;
         }
-
         /**
          * Generated the corresponding subject instance.
          * */
@@ -136,11 +146,6 @@ private B1(Builder user) {
             }
             return new B1(this);//this: builder自己的filed
         }
-//        public UserBuilder builder(){
-//            if(userName == null || password == null) {
-//                throw new IllegalArgumentException("You have to fill this info");
-//            }
-//            return new UserBuilder();
-//        }
+
     }
 }

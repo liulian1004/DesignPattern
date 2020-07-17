@@ -2,7 +2,6 @@ package DesginPattern;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 interface executable {
     void execute();
