@@ -120,7 +120,7 @@ public class Pratice {
         CharacterClass;
     }
     interface Iproduct {
-        public DataSource product(InputType type, List<Object> list);
+        public Idata product(InputType type, List<Object> list);
     }
     class DataAdaptor implements Iproduct {
         @Override
@@ -189,6 +189,5 @@ public class Pratice {
         public void onChange(DataSource data) {
             View view = new View();
             view.showContent(data.getContent());
-
         }
     }
